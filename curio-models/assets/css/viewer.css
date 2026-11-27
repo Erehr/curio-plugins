@@ -1,0 +1,9 @@
+/* The 3D viewer: the scene fills the page, on the theme's background; Details floats over its right side. */
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--text); overflow: hidden; }
+.stage { position: absolute; inset: 0; }
+.stage canvas { display: block; width: 100%; height: 100%; outline: none; }
+.details { position: absolute; top: calc(0.84rem * var(--g)); right: calc(0.84rem * var(--g)); width: round(19.58rem, 1px); max-height: calc(100% - 1.68rem * var(--g)); overflow: auto; box-sizing: border-box; padding: calc(0.7rem * var(--g)) calc(0.84rem * var(--g)); background: color-mix(in srgb, var(--panel) 92%, transparent); border: 1px solid var(--border); border-radius: calc(8px * var(--r)); }
+.details[hidden], .status[hidden], .problem[hidden] { display: none; }
+.status { position: absolute; left: calc(1.12rem * var(--g)); bottom: calc(0.98rem * var(--g)); color: var(--text-muted); font-size: 0.92rem; pointer-events: none; }
+.problem { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: calc(2.24rem * var(--g)); color: var(--text-muted); text-align: center; }

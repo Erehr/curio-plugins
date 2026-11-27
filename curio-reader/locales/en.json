@@ -1,0 +1,281 @@
+{
+  "reader": {
+    "opening": "Opening",
+    "cantOpenBook": "Can't open this book: {error}",
+    "cantOpenArchive": "Can't open this archive: {error}",
+    "drm": "This book is DRM-protected. Open it in the app it was bought from.",
+    "password": "Password-protected PDFs can’t be opened yet.",
+    "readFailed": "Couldn't read the file ({status})",
+    "untitled": "Untitled",
+    "side": {
+      "contents": "Contents",
+      "bookmarks": "Bookmarks",
+      "pages": "Pages",
+      "search": "Search",
+      "sidebar": "Sidebar",
+      "show": "Show sidebar",
+      "hide": "Hide sidebar",
+      "resize": "Drag to resize"
+    },
+    "search": {
+      "placeholder": "Search the book",
+      "searching": "Searching",
+      "progress": "Searching {percent}%",
+      "progressFound": "Searching {percent}% · {count} found | Searching {percent}% · {count} found",
+      "found": "{count} found | {count} found",
+      "foundMore": "{count}+ found",
+      "none": "Not found",
+      "failed": "Couldn't search: {error}"
+    },
+    "marks": {
+      "add": "Add bookmark",
+      "remove": "Remove bookmark",
+      "bookmark": "Bookmark",
+      "addMany": "Bookmark {count} page | Bookmark {count} pages",
+      "removeMany": "Remove {count} bookmark | Remove {count} bookmarks",
+      "none": "No bookmarks yet",
+      "noneYet": "No bookmarks yet.",
+      "noneKey": "No bookmarks yet. Press {key} to add one.",
+      "noneAfter": "No bookmark after this page",
+      "noneBefore": "No bookmark before this page"
+    },
+    "nav": {
+      "noContents": "No contents",
+      "noNext": "No next chapter",
+      "noPrevious": "No previous chapter",
+      "back": "Back"
+    },
+    "places": {
+      "frontPages": "Front pages",
+      "otherPages": "Other pages",
+      "covers": {
+        "frontcover": "Front cover",
+        "innercover": "Inner cover",
+        "backcover": "Back cover"
+      },
+      "page": "Page {page}",
+      "pageShort": "p. {page}",
+      "inChapter": "{chapter} · p. {page}"
+    },
+    "grid": {
+      "pageGrid": "Page grid",
+      "pages": "{count} page | {count} pages",
+      "pagesSelected": "{count} page · {selected} selected | {count} pages · {selected} selected",
+      "readFrom": "Read from this page",
+      "showAll": "Show all pages"
+    },
+    "gridStyles": {
+      "grid": "Grid",
+      "justified": "Justified",
+      "masonry": "Masonry"
+    },
+    "layouts": {
+      "single": "Single",
+      "double": "Double",
+      "continuous": "Continuous"
+    },
+    "directions": {
+      "ltr": "Left to right",
+      "rtl": "Right to left"
+    },
+    "fits": {
+      "page": "Fit page",
+      "width": "Fit width",
+      "height": "Fit height"
+    },
+    "tools": {
+      "page": "Page",
+      "position": "Position",
+      "text": "Text",
+      "layout": "Layout",
+      "theme": "Theme",
+      "direction": "Direction",
+      "fit": "Fit",
+      "pageWidth": "Page width",
+      "pageGap": "Page gap",
+      "separateCovers": "Separate covers",
+      "upscale": "Upscale small pages",
+      "wheel": "Wheel navigation",
+      "margins": "Margins",
+      "columnGap": "Column gap"
+    },
+    "text": {
+      "font": "Font",
+      "size": "Size",
+      "lineHeight": "Line height",
+      "alignment": "Alignment",
+      "default": "Default",
+      "left": "Left",
+      "justify": "Justify",
+      "indent": "Indent",
+      "on": "On",
+      "off": "Off",
+      "paragraph": "Paragraph spacing",
+      "none": "None",
+      "hyphenation": "Hyphenation"
+    },
+    "fonts": {
+      "serif": "Serif",
+      "sans-serif": "Sans serif",
+      "monospace": "Monospace"
+    },
+    "themes": {
+      "light": "Light",
+      "sepia": "Sepia",
+      "dark": "Dark",
+      "black": "Black",
+      "book": "Original"
+    },
+    "steps": {
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large"
+    },
+    "links": {
+      "goToNote": "Go to note",
+      "cantOpen": "Couldn’t open the link: {error}",
+      "open": "Open in browser",
+      "copy": "Copy link: {link}",
+      "copied": "Link copied"
+    },
+    "selection": {
+      "copy": "Copy",
+      "find": "Search for “{text}”"
+    },
+    "thumb": {
+      "set": "Set as thumbnail",
+      "done": "Thumbnail set",
+      "failed": "Couldn't set the thumbnail: {error}"
+    },
+    "archive": {
+      "noPictures": "No pictures in this archive.",
+      "empty": "This archive is empty.",
+      "add": "Add to library",
+      "addMany": "Add {count} page to library | Add {count} pages to library",
+      "pageName": "Page",
+      "addFailed": "Couldn't add page {page}: {error}",
+      "added": "Page added to the library | {count} pages added to the library",
+      "had": "one was there already | {count} were there already",
+      "addedHad": "{added}; {had}",
+      "allHad": "The page was in the library already | {count} pages were in the library already"
+    },
+    "states": {
+      "unread": "Not started",
+      "want": "Want to read",
+      "reading": "Reading",
+      "finished": "Completed",
+      "dropped": "Dropped"
+    },
+    "book": {
+      "link": "Link",
+      "pageOf": "page {page} of {pages}",
+      "readAgain": "Read again",
+      "resume": "Resume",
+      "read": "Read",
+      "startOver": "Start over",
+      "author": "Author",
+      "series": "Series",
+      "pages": "Pages",
+      "words": "Words",
+      "published": "Published",
+      "publisher": "Publisher",
+      "language": "Language"
+    }
+  },
+  "manifest": {
+    "name": "Reader",
+    "description": "Reads ebooks, PDFs and comics with covers, metadata, adjustable layouts and bookmarks.",
+    "fields": {
+      "read_state": {
+        "label": "Reading status"
+      },
+      "read_progress": {
+        "label": "Progress (%)"
+      },
+      "pages": {
+        "label": "Pages",
+        "description": "A PDF's or comic's pages; a book's as calibre counted them, its printed pages, or estimated at 1,500 characters of text a page"
+      },
+      "words": {
+        "label": "Words"
+      },
+      "title": {
+        "label": "Title",
+        "description": "Title stored in the file"
+      },
+      "author": {
+        "label": "Author",
+        "description": "Writers, in the order the book names them"
+      },
+      "series": {
+        "label": "Series"
+      },
+      "series_index": {
+        "label": "Number in series"
+      },
+      "published": {
+        "label": "Published"
+      },
+      "publisher": {
+        "label": "Publisher"
+      },
+      "language": {
+        "label": "Language",
+        "description": "Language code, such as en"
+      },
+      "isbn": {
+        "label": "ISBN"
+      },
+      "identifiers": {
+        "label": "Identifiers",
+        "description": "Such as isbn:9780140328721 or goodreads:4981"
+      },
+      "genre": {
+        "label": "Genre"
+      }
+    },
+    "widgets": {
+      "curio": {
+        "reader": {
+          "genres": "Genres",
+          "book": "Book",
+          "series": "Series"
+        }
+      }
+    },
+    "viewerTools": {
+      "place": "Progress",
+      "chapter": "Chapter",
+      "side": "Sidebar",
+      "bookmark": "Bookmark",
+      "search": "Search",
+      "grid": "Page grid",
+      "gridStyle": "Grid style",
+      "double": "Double page",
+      "continuous": "Continuous",
+      "rtl": "Right to left",
+      "fit": "Fit",
+      "layout": "Layout",
+      "look": "Appearance"
+    },
+    "viewerKeys": {
+      "side": "Sidebar",
+      "bookmark": "Bookmark",
+      "markBack": "Previous bookmark",
+      "markAhead": "Next bookmark",
+      "chapterBack": "Previous chapter",
+      "chapterAhead": "Next chapter",
+      "search": "Search",
+      "double": "Double page",
+      "continuous": "Continuous",
+      "rtl": "Right to left",
+      "fit": "Fit",
+      "grid": "Page grid",
+      "gridStyle": "Grid style",
+      "theme": "Next theme"
+    },
+    "screens": {
+      "reader": "Reader"
+    }
+  }
+}

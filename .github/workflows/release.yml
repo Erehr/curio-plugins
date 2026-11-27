@@ -1,0 +1,86 @@
+# One plugin released on its own, from a tag <folder>-v<version> (curio-reader-v0.7.0): the version must be that folder's plugin.json's, and the release holds <folder>-<version>.zip, the plugin's folder to unpack and add in Curio's Settings › Plugins.
+# Notes come from the typed commit titles that touched that folder since its previous tag. Run by hand with a folder's name, it packs that plugin as an artifact only.
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      plugin:
+        description: The plugin's folder (curio-reader, curio-models, curio-ai-generated)
+        required: true
+  push:
+    tags: ["*-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: The plugin and its version
+        id: which
+        env:
+          PICKED: ${{ inputs.plugin }}
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = tag ]; then name=${GITHUB_REF_NAME%-v*}; want=${GITHUB_REF_NAME##*-v}; else name=$PICKED; want=; fi
+          [ -f "$name/plugin.json" ] || { echo "::error::No plugin.json in a folder named $name"; exit 1; }
+          v=$(node -p "require('./$name/plugin.json').version")
+          [ -z "$want" ] || [ "$want" = "$v" ] || { echo "::error::The tag says $want but $name/plugin.json says $v"; exit 1; }
+          title=$(node -p "require('./$name/plugin.json').name || '$name'")
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "title=$title" >> "$GITHUB_OUTPUT"
+
+      - name: Pack
+        run: |
+          mkdir -p dist
+          zip -r -q "dist/${{ steps.which.outputs.name }}-${{ steps.which.outputs.version }}.zip" "${{ steps.which.outputs.name }}" -x "*/.*"
+          unzip -l "dist/${{ steps.which.outputs.name }}-${{ steps.which.outputs.version }}.zip" | tail -1
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.which.outputs.name }}
+          path: dist/*.zip
+
+      # the typed commit titles that touched this plugin since its previous tag, grouped by type
+      - name: Release notes
+        if: github.ref_type == 'tag'
+        env:
+          PLUGIN: ${{ steps.which.outputs.name }}
+        run: |
+          prev=$(git describe --tags --abbrev=0 --match "$PLUGIN-v*" "$GITHUB_REF_NAME^" 2>/dev/null || true)
+          git log --no-merges --format=%s "${prev:+$prev..}$GITHUB_REF_NAME" -- "$PLUGIN" > commits.txt
+          node - "$prev" <<'EOF'
+          const fs = require('fs')
+          const prev = process.argv[2]
+          const groups = [['break', 'Breaking changes'], ['security', 'Security'], ['feat', 'New'], ['change', 'Changed'], ['fix', 'Fixed'], ['perf', 'Faster'], ['remove', 'Removed']]
+          const internal = new Set(['docs', 'test', 'build', 'refactor', 'chore', 'ci', 'style'])
+          const found = Object.fromEntries(groups.map(([t]) => [t, []]))
+          const other = []
+          for (const title of fs.readFileSync('commits.txt', 'utf8').split('\n').filter(Boolean)) {
+            const m = title.match(/^(\w+)(?:\([^)]*\))?!?:\s*(.+)$/)
+            if (m && found[m[1]]) found[m[1]].push(m[2])
+            else if (!m || !internal.has(m[1])) other.push(title)
+          }
+          let notes = ''
+          for (const [t, heading] of groups) if (found[t].length) notes += `## ${heading}\n\n${found[t].map((s) => `- ${s}`).join('\n')}\n\n`
+          if (other.length) notes += `## Other\n\n${other.map((s) => `- ${s}`).join('\n')}\n\n`
+          if (!notes) notes = prev ? 'Maintenance release.\n\n' : 'First release.\n\n'
+          notes += 'Unzip it and choose the folder inside with **Add plugin** in Curio\'s **Settings › Plugins**, or put it in Curio\'s plugins folder.\n'
+          fs.writeFileSync('notes.md', notes)
+          EOF
+          cat notes.md
+
+      - name: Draft release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v3
+        with:
+          draft: true
+          name: ${{ steps.which.outputs.title }} ${{ steps.which.outputs.version }}
+          body_path: notes.md
+          files: dist/*.zip

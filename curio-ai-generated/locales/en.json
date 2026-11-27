@@ -1,0 +1,95 @@
+{
+  "manifest": {
+    "name": "AI generation",
+    "description": "Shows prompts and settings for AI-generated pictures, plus metadata and previews for models.",
+    "fields": {
+      "prompt": {
+        "label": "Prompt",
+        "description": "Positive prompt"
+      },
+      "negative_prompt": {
+        "label": "Negative prompt",
+        "description": "Negative prompt"
+      },
+      "model": {
+        "label": "Model",
+        "description": "Checkpoint name"
+      },
+      "model_hash": {
+        "label": "Model hash"
+      },
+      "vae": {
+        "label": "VAE"
+      },
+      "lora": {
+        "label": "LoRA",
+        "description": "LoRA names"
+      },
+      "lora_strength": {
+        "label": "LoRA strength",
+        "description": "One value per LoRA, same order"
+      },
+      "sampler": {
+        "label": "Sampler"
+      },
+      "scheduler": {
+        "label": "Scheduler"
+      },
+      "steps": {
+        "label": "Steps"
+      },
+      "cfg": {
+        "label": "CFG scale"
+      },
+      "seed": {
+        "label": "Seed"
+      },
+      "denoise": {
+        "label": "Denoise"
+      },
+      "clip_skip": {
+        "label": "Clip skip"
+      },
+      "software": {
+        "label": "Generation software"
+      },
+      "model_type": {
+        "label": "Model type",
+        "description": "Checkpoint, LoRA and the like"
+      },
+      "base_model": {
+        "label": "Base model",
+        "description": "Architecture, such as SDXL"
+      },
+      "model_version": {
+        "label": "Version",
+        "description": "Civitai version name"
+      },
+      "creator": {
+        "label": "Creator",
+        "description": "Who published the model"
+      },
+      "trigger_words": {
+        "label": "Trigger words",
+        "description": "Words that activate a LoRA"
+      }
+    },
+    "widgets": {
+      "ai": {
+        "generation": "AI generation",
+        "model": "AI model"
+      }
+    },
+    "filters": {
+      "ai": {
+        "any": "AI-generated",
+        "models": "AI models",
+        "fast": "≤ 12 steps"
+      }
+    },
+    "sorts": {
+      "steps": "Steps",
+      "cfg": "CFG"
+    }
+  }
+}

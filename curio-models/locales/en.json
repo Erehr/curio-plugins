@@ -1,0 +1,111 @@
+{
+  "models": {
+    "tools": {
+      "fit": "Fit",
+      "grid": "Floor grid",
+      "edges": "Edges",
+      "textures": "Textures",
+      "details": "Details",
+      "appearance": "Appearance",
+      "shading": "Shading",
+      "light": "Light",
+      "up": "Up",
+      "upAuto": "Auto"
+    },
+    "shadings": {
+      "materials": "Materials",
+      "plain": "Plain",
+      "normals": "Normals",
+      "wireframe": "Wireframe"
+    },
+    "details": {
+      "materials": "Materials",
+      "meshes": "Meshes",
+      "missingTextures": "Missing textures",
+      "size": "Size",
+      "surfaceArea": "Surface area",
+      "textures": "Textures",
+      "triangles": "Triangles",
+      "vertices": "Vertices",
+      "volume": "Volume",
+      "measuring": "Measuring"
+    },
+    "loading": "Loading model",
+    "tooLarge": "This model is too large to show here ({size}); the viewer opens files up to 512 MB.",
+    "tooLargeUnpacked": "This model is too large to show here (unpacked over {size}); the viewer opens files up to 512 MB.",
+    "problem": "This model can't be shown: {error}"
+  },
+  "manifest": {
+    "name": "3D models",
+    "description": "Shows STL, 3MF, OBJ, glTF and PLY models with their textures, to turn and zoom, and reads their triangles and size for search and filters.",
+    "fields": {
+      "model_triangles": {
+        "label": "Triangles",
+        "description": "The faces of the model, counted as triangles"
+      },
+      "model_width": {
+        "label": "Width (mm)",
+        "description": "The model's width in millimetres; a file without a unit is taken as millimetres"
+      },
+      "model_depth": {
+        "label": "Depth (mm)",
+        "description": "The model's depth in millimetres; a file without a unit is taken as millimetres"
+      },
+      "model_height": {
+        "label": "Height (mm)",
+        "description": "The model's height in millimetres, along the axis the file stands on; a file without a unit is taken as millimetres"
+      },
+      "model_unit": {
+        "label": "Model unit",
+        "description": "The unit the file declares; 3MF and glTF files declare one"
+      },
+      "model_textured": {
+        "label": "Textured",
+        "description": "Its materials use pictures"
+      },
+      "model_vertices": {
+        "label": "Vertices"
+      },
+      "model_objects": {
+        "label": "Objects",
+        "description": "The separate objects or meshes the file holds"
+      }
+    },
+    "widgets": {
+      "curio": {
+        "models": {
+          "info": "3D model"
+        }
+      }
+    },
+    "filters": {
+      "curio": {
+        "models": {
+          "textured": "Textured models"
+        }
+      }
+    },
+    "sorts": {
+      "model_triangles": "Triangles"
+    },
+    "viewerTools": {
+      "fit": "Fit",
+      "grid": "Floor grid",
+      "edges": "Edges",
+      "textures": "Textures",
+      "details": "Details",
+      "look": "Appearance"
+    },
+    "viewerKeys": {
+      "fit": "Fit",
+      "grid": "Floor grid",
+      "edges": "Edges",
+      "textures": "Textures",
+      "details": "Details",
+      "shading": "Next shading"
+    },
+    "screens": {
+      "models": "3D models"
+    }
+  }
+}

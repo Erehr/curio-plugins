@@ -1,0 +1,114 @@
+html, body { height: 100%; margin: 0; overflow: hidden; background: transparent; }
+/* the pages reach the frame's edges, without the kit's padding for pages of text */
+:root.curio-kit body { padding: 0; }
+#main { position: absolute; inset: 0; }
+#main[hidden] { display: none; }
+
+.surface { position: absolute; inset: 0; overflow: auto; outline: none; overscroll-behavior: contain; }
+.surface.dragging { cursor: grabbing; }
+.strip { position: relative; }
+.spread { position: absolute; display: flex; }
+.surface.rtl .spread { flex-direction: row-reverse; }
+/* a spread kept in the page unseen takes no room, so it adds nothing to scroll to */
+.spread.waiting { visibility: hidden; pointer-events: none; width: 0 !important; height: 0 !important; overflow: hidden; }
+.pg { position: relative; flex: none; height: 100%; background: color-mix(in srgb, var(--text) 5%, transparent); }
+/* the page number shows until the page is filled */
+.pg::before { content: attr(data-page); position: absolute; inset: 0; display: grid; place-items: center; color: var(--text-faint); font-size: 0.92rem; }
+.pg:not(:empty)::before { content: none; }
+.pg:not(:empty) { background: none; }
+.pg.failed::before { content: "Can't show page " attr(data-page); }
+.pg img { display: block; width: 100%; height: 100%; user-select: none; -webkit-user-drag: none; }
+
+/* a PDF page: its canvas under pdf.js's layers for its text and links, which are laid out from these */
+.pdf-page { position: absolute; inset: 0; --total-scale-factor: 1; --scale-round-x: 1px; --scale-round-y: 1px; --user-unit: 1; }
+.pdf-page canvas { display: block; width: 100%; height: 100%; }
+/* the kit's pages don't select text; a page's own text does */
+.pdf-page .textLayer, .pdf-page .textLayer * { user-select: text; -webkit-user-select: text; }
+/* a fixed layout page: its frame at the size the page was made for, scaled from its corner to the box; white under it, as a page without a background of its own expects */
+.frame-page { position: absolute; inset: 0; overflow: hidden; background: #fff; }
+.frame-page iframe { display: block; border: 0; transform-origin: 0 0; }
+/* pdf.js measures text on canvases it leaves in the page */
+.hiddenCanvasElement { position: absolute; top: 0; left: 0; width: 0; height: 0; display: none; }
+::highlight(curio-search) { background-color: rgb(255 208 0 / 0.4); }
+::highlight(curio-search-at) { background-color: rgb(255 122 0 / 0.65); }
+
+#note { position: absolute; inset: 0; display: grid; place-items: center; overflow: auto; }
+#note[hidden] { display: none; }
+.contents { align-self: start; width: min(50.35rem, 100%); padding: calc(1.12rem * var(--g)); box-sizing: border-box; }
+.entry { display: flex; justify-content: space-between; gap: 0.84rem; padding: calc(0.28rem * var(--g)) 0; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+
+
+/* on each picture rather than the whole strip, which in a column is far taller than any layer should be */
+.grid { position: absolute; inset: 0; overflow: auto; outline: none; overscroll-behavior: contain; }
+.grid[hidden], .surface[hidden] { display: none; }
+.cell { position: absolute; cursor: pointer; border-radius: calc(4px * var(--r)); overflow: hidden; background: color-mix(in srgb, var(--text) 5%, transparent); }
+.cell::before { content: attr(data-page); position: absolute; inset: 0; display: grid; place-items: center; color: var(--text-faint); font-size: 0.85rem; }
+.cell:has(img)::before { content: none; }
+.cell:has(img) { background: none; }
+.cell img { display: block; width: 100%; height: 100%; user-select: none; -webkit-user-drag: none; }
+.cell:hover { outline: 2px solid color-mix(in srgb, var(--accent) 50%, transparent); outline-offset: 1px; }
+.cell.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
+.cell.failed::before { content: "Page " attr(data-page) " can't be shown"; }
+
+/* bookmarked pages: a ribbon at the top corner */
+.pg.marked::after, .cell.marked::after { content: ''; position: absolute; top: 0; right: calc(0.98rem * var(--g)); width: round(0.98rem, 1px); height: round(1.54rem, 1px); background: var(--accent); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%); z-index: 1; pointer-events: none; }
+.cell.marked::after { right: 0.42rem; width: round(0.7rem, 1px); height: round(1.12rem, 1px); }
+.surface.rtl .pg.marked::after { right: auto; left: calc(0.98rem * var(--g)); }
+
+/* the side strip at the reading edge, pushing the pages aside */
+body.side-open #main { left: var(--side-w, 18.18rem); }
+body.side-open.side-right #main { left: 0; right: var(--side-w, 18.18rem); }
+#side { position: absolute; top: 0; bottom: 0; left: 0; width: var(--side-w, 18.18rem); display: flex; flex-direction: column; border-right: 1px solid var(--border); background: color-mix(in srgb, var(--panel) 60%, transparent); }
+body.side-right #side { left: auto; right: 0; border-right: 0; border-left: 1px solid var(--border); }
+#side[hidden] { display: none; }
+#side .tabs { display: flex; gap: 0.14rem; padding: calc(0.42rem * var(--g)); border-bottom: 1px solid var(--border); }
+#side .tab { flex: 1; min-width: 0; padding: calc(0.28rem * var(--g)) calc(0.42rem * var(--g)); border: 0; border-radius: calc(6px * var(--r)); background: transparent; color: var(--text-muted); font: inherit; font-size: 0.92rem; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#side .tab:hover { background: var(--hover); color: var(--text); }
+#side .tab.on { background: var(--active); color: var(--text); }
+#side .tab[hidden] { display: none; }
+#side .pane { position: relative; flex: 1; min-height: 0; overflow: auto; }
+#side .pane[hidden] { display: none; }
+#side .pane[data-pane=bookmarks] { display: flex; flex-direction: column; overflow: hidden; }
+#side .pane[data-pane=bookmarks][hidden] { display: none; }
+#side .head { padding: calc(0.56rem * var(--g)); border-bottom: 1px solid var(--border); }
+#side .head .btn { width: 100%; }
+#side .places { flex: 1; min-height: 0; overflow: auto; padding: calc(0.28rem * var(--g)) 0; }
+#side .place { display: flex; align-items: center; gap: calc(0.56rem * var(--g)); padding: calc(0.35rem * var(--g)) calc(0.7rem * var(--g)); cursor: pointer; }
+#side .place:hover { background: var(--hover); }
+#side .place.current { background: var(--active); color: var(--text); }
+#side .place .num { font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+#side .place input { min-width: 0; padding: 0.14rem 0.42rem; height: auto; }
+#side .place .x { flex: none; width: round(1.4rem, 1px); height: round(1.4rem, 1px); padding: 0; border: 0; border-radius: calc(4px * var(--r)); background: transparent; color: var(--text-faint); font-size: 1.08rem; line-height: 1; cursor: pointer; visibility: hidden; }
+#side .place:hover .x, #side .place .x:focus-visible { visibility: visible; }
+#side .place .x:hover { background: var(--hover); color: var(--text); }
+#side .empty { padding: calc(0.84rem * var(--g)); margin: 0; }
+#side .grid .cell.current { outline: 2px solid var(--accent); outline-offset: 1px; }
+/* the page's number on each thumbnail in the strip, over the picture */
+#side .grid .cell::before, #side .grid .cell:has(img)::before { content: attr(data-page); inset: auto 0.28rem 0.28rem auto; display: block; padding: 0 0.35rem; border-radius: calc(4px * var(--r)); background: rgb(0 0 0 / 0.55); color: #fff; font-size: 0.85rem; z-index: 1; }
+#side .resize { position: absolute; top: 0; bottom: 0; right: -0.21rem; width: 0.42rem; cursor: col-resize; z-index: 2; }
+body.side-right #side .resize { right: auto; left: -0.21rem; }
+#side .resize:hover { background: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+/* a book scrolled: its sections' frames one under another, placed by the reader, which keeps the place itself when one changes height */
+.flow { position: absolute; inset: 0; overflow: auto; overflow-anchor: none; outline: none; overscroll-behavior: contain; }
+.flow .strip { position: relative; }
+.flow iframe { position: absolute; display: block; border: 0; background: transparent; }
+/* a book: foliate-js's view fills the page area, on the theme's background */
+.book { position: absolute; inset: 0; }
+.book[hidden] { display: none; }
+.book foliate-view { display: block; width: 100%; height: 100%; }
+.book-ribbon { position: absolute; top: 0; right: calc(1.26rem * var(--g)); width: round(0.98rem, 1px); height: round(1.54rem, 1px); background: var(--accent); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%); z-index: 2; pointer-events: none; }
+.book-ribbon[hidden] { display: none; }
+/* a footnote over the page */
+.book-note { position: absolute; left: 50%; bottom: calc(1.26rem * var(--g)); transform: translateX(-50%); width: min(43.36rem, calc(100% - 2.24rem)); display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: calc(10px * var(--r)); background: var(--panel); z-index: 3; overflow: hidden; }
+.book-note[hidden] { display: none; }
+.book-note .body { height: min(18.18rem, 40vh); padding: calc(0.7rem * var(--g)) calc(1.12rem * var(--g)); box-sizing: border-box; }
+.book-note .body foliate-view { display: block; width: 100%; height: 100%; }
+.book-note .bar { display: flex; justify-content: flex-end; padding: calc(0.42rem * var(--g)) calc(0.7rem * var(--g)); border-top: 1px solid var(--border); }
+/* search in the side strip */
+#side .head input { width: 100%; }
+#side .found .group { padding: calc(0.56rem * var(--g)) calc(0.7rem * var(--g)) calc(0.14rem * var(--g)); font-size: 0.85rem; }
+#side .place.hit { display: block; white-space: normal; font-size: 0.92rem; line-height: 1.35; color: var(--text-muted); }
+#side .place.hit mark { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--text); border-radius: calc(2px * var(--r)); }
+#side .pane[data-pane=search] { display: flex; flex-direction: column; overflow: hidden; }
+#side .pane[data-pane=search][hidden] { display: none; }

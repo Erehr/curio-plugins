@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/curio/ui/curio.css">
+  <script src="/curio/ui/curio.js"></script>
+  <script type="module" src="../assets/js/widget.js"></script>
+  <style>
+    /* laid out as Curio's own widgets are: a column of parts */
+    body { display: flex; flex-direction: column; gap: calc(0.7rem * var(--g)); padding-bottom: calc(0.84rem * var(--g)); }
+    html { overflow-y: auto; }
+    .where { display: flex; align-items: center; gap: calc(0.28rem * var(--g)); margin-top: calc(-0.42rem * var(--g)); color: var(--text-muted); font-size: 0.92rem; }
+    .where #where { flex: 1; min-width: 0; }
+    [hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <button type="button" id="status" class="curio-select-btn full"></button>
+  <div id="progress" class="curio-progress" hidden><span id="progress-bar"></span></div>
+  <div class="where"><span id="where"></span><button type="button" id="reset" class="btn text small" hidden></button><button type="button" id="continue" class="btn text small"></button></div>
+  <div id="facts" class="curio-props"></div>
+</body>
+</html>

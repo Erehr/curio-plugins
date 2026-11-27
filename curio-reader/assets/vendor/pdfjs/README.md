@@ -1,0 +1,3 @@
+pdf.js (Apache-2.0, `LICENSE`) from pdfjs-dist 6.4.299: the legacy build's `pdf.min.mjs` and `pdf.worker.min.mjs`, `cmaps/`, `standard_fonts/` (Foxit and Liberation fonts, `LICENSE_FOXIT`, `LICENSE_LIBERATION`) and the decoders `jbig2.wasm` (PDFium, `LICENSE_JBIG2`), `openjpeg.wasm` (OpenJPEG, `LICENSE_OPENJPEG`) and `qcms_bg.wasm` (qcms, `LICENSE_QCMS`), each with pdf.js's notice for it (`LICENSE_PDFJS_*`). `text_layer_builder.css` and `annotation_layer_builder.css` are pdf.js's layer styles as Readest's foliate-js fork keeps them (commit 07ef841).
+
+Not copied: the non-legacy build, source maps, the viewer, `quickjs-eval` (scripts in PDFs, which Curio doesn't run), the decoders' no-wasm fallbacks and `iccs/`.

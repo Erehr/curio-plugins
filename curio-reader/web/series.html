@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/curio/ui/curio.css">
+  <script src="/curio/ui/curio.js"></script>
+  <script type="module" src="../assets/js/series.js"></script>
+  <style>
+    /* laid out as Curio's own widgets are: a column of parts, rows as the Library's */
+    body { display: flex; flex-direction: column; gap: calc(0.42rem * var(--g)); padding-bottom: calc(0.84rem * var(--g)); }
+    html { overflow-y: auto; }
+    #list { display: flex; flex-direction: column; gap: 1px; }
+    .row { display: flex; align-items: center; gap: calc(0.56rem * var(--g)); padding: 0.14rem calc(0.42rem * var(--g)) 0.14rem 0.14rem; border-radius: calc(6px * var(--r)); cursor: pointer; }
+    .row:hover { background: var(--hover); }
+    .row.current { background: var(--selection); }
+    .row .curio-thumb { flex: none; }
+    .num { flex: none; min-width: 2ch; text-align: right; color: var(--text-muted); font-size: 0.92rem; }
+    .title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .state { flex: none; color: var(--text-muted); font-size: 0.92rem; }
+    .state.finished { color: var(--accent); }
+    body[hidden] { display: none; }
+  </style>
+</head>
+<body hidden>
+  <div id="list"></div>
+</body>
+</html>

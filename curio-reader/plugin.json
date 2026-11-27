@@ -1,0 +1,76 @@
+{
+  "id": "curio.reader",
+  "name": "Reader",
+  "version": "1.0.0",
+  "author": "Curio",
+  "icon": "book",
+  "description": "Reads ebooks, PDFs and comics with covers, metadata, adjustable layouts and bookmarks.",
+  "permissions": ["metadata.read", "metadata.write", "files.read", "files.write", "ui"],
+  "fields": [
+    { "key": "read_state", "label": "Reading status", "type": "single_select", "options": ["unread", "want", "reading", "finished", "dropped"] },
+    { "key": "read_progress", "label": "Progress (%)", "type": "integer" },
+    { "key": "pages", "label": "Pages", "type": "integer", "description": "A PDF's or comic's pages; a book's as calibre counted them, its printed pages, or estimated at 1,500 characters of text a page" },
+    { "key": "words", "label": "Words", "type": "integer" },
+    { "key": "title", "label": "Title", "type": "text", "description": "Title stored in the file" },
+    { "key": "author", "label": "Author", "type": "text", "description": "Writers, in the order the book names them" },
+    { "key": "series", "label": "Series", "type": "text" },
+    { "key": "series_index", "label": "Number in series", "type": "float", "pair": "series" },
+    { "key": "published", "label": "Published", "type": "date" },
+    { "key": "publisher", "label": "Publisher", "type": "text" },
+    { "key": "language", "label": "Language", "type": "text", "description": "Language code, such as en" },
+    { "key": "isbn", "label": "ISBN", "type": "text" },
+    { "key": "identifiers", "label": "Identifiers", "type": "text", "description": "Such as isbn:9780140328721 or goodreads:4981" },
+    { "key": "genre", "label": "Genre", "type": "multi_select", "widget": "chips" }
+  ],
+  "extractors": [
+    { "id": "comics", "version": 1,
+      "exts": ["cbz", "cb7"],
+      "page": "extract.html",
+      "fields": ["pages", "title", "author", "series", "series_index", "published", "publisher", "language", "genre"] },
+    { "id": "books", "version": 1,
+      "exts": ["pdf", "epub", "fb2", "fbz", "mobi", "azw3", "azw", "prc"],
+      "page": "extract.html",
+      "fields": ["pages", "words", "title", "author", "series", "series_index", "published", "publisher", "language", "isbn", "identifiers", "genre"] }
+  ],
+  "formats": [
+    { "exts": ["cbz", "cb7"], "kind": "archive", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 }, "screen": { "id": "reader", "title": "Reader", "icon": "book", "toolbar": ["v.back", "v.count", "v.group", "breadcrumb", "spacer", "place", "side", "bookmark", "search", "grid", "gridStyle", "layout", "look", "nav"], "inspector": ["curio.reader.genres", "curio.reader.book", "curio.reader.series"] } },
+    { "exts": ["pdf"], "kind": "document", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 } },
+    { "exts": ["epub", "fb2", "fbz", "mobi", "azw3", "azw", "prc"], "kind": "document", "type": "Books", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 } }
+  ],
+  "viewer_tools": [
+    { "id": "place", "title": "Progress", "icon": "progress", "kind": "slider" },
+    { "id": "chapter", "title": "Chapter", "icon": "list", "kind": "text" },
+    { "id": "side", "title": "Sidebar", "icon": "layout-sidebar", "kind": "button" },
+    { "id": "bookmark", "title": "Bookmark", "icon": "bookmark", "kind": "button" },
+    { "id": "search", "title": "Search", "icon": "search", "kind": "button" },
+    { "id": "grid", "title": "Page grid", "icon": "layout-grid", "kind": "button" },
+    { "id": "gridStyle", "title": "Grid style", "icon": "layout-dashboard", "kind": "button" },
+    { "id": "double", "title": "Double page", "icon": "book", "kind": "button" },
+    { "id": "continuous", "title": "Continuous", "icon": "layout-rows", "kind": "button" },
+    { "id": "rtl", "title": "Right to left", "icon": "text-direction-rtl", "kind": "button" },
+    { "id": "fit", "title": "Fit", "icon": "maximize", "kind": "button" },
+    { "id": "layout", "title": "Layout", "icon": "layout", "kind": "button" },
+    { "id": "look", "title": "Appearance", "icon": "adjustments-horizontal", "kind": "button" }
+  ],
+  "viewer_keys": [
+    { "id": "side", "title": "Sidebar", "key": "T" },
+    { "id": "bookmark", "title": "Bookmark", "key": "B" },
+    { "id": "markBack", "title": "Previous bookmark", "key": "[" },
+    { "id": "markAhead", "title": "Next bookmark", "key": "]" },
+    { "id": "chapterBack", "title": "Previous chapter", "key": "{" },
+    { "id": "chapterAhead", "title": "Next chapter", "key": "}" },
+    { "id": "search", "title": "Search", "key": "/" },
+    { "id": "double", "title": "Double page", "key": "D" },
+    { "id": "continuous", "title": "Continuous", "key": "C" },
+    { "id": "rtl", "title": "Right to left", "key": "M" },
+    { "id": "fit", "title": "Fit", "key": "W" },
+    { "id": "grid", "title": "Page grid", "key": "G" },
+    { "id": "gridStyle", "title": "Grid style", "key": "S" },
+    { "id": "theme", "title": "Next theme", "key": "K" }
+  ],
+  "widgets": [
+    { "id": "curio.reader.genres", "title": "Genres", "icon": "category", "page": "web/genres.html", "height": 48, "selection": "one", "kinds": ["archive", "document"] },
+    { "id": "curio.reader.book", "title": "Book", "icon": "book", "page": "web/widget.html", "height": 260, "selection": "one", "kinds": ["archive", "document"], "exts": ["cbz", "cb7", "pdf", "epub", "fb2", "fbz", "mobi", "azw3", "azw", "prc"] },
+    { "id": "curio.reader.series", "title": "Series", "icon": "books", "page": "web/series.html", "height": 160, "selection": "one", "kinds": ["archive", "document"] }
+  ]
+}

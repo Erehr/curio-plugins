@@ -1,0 +1,58 @@
+{
+  "id": "curio.models",
+  "name": "3D models",
+  "version": "1.0.0",
+  "author": "Curio",
+  "icon": "cube",
+  "description": "Shows STL, 3MF, OBJ, glTF and PLY models with their textures, to turn and zoom, and reads their triangles and size for search and filters.",
+  "permissions": ["metadata.read", "metadata.write", "files.read", "ui"],
+  "fields": [
+    { "key": "model_triangles", "label": "Triangles", "type": "integer", "description": "The faces of the model, counted as triangles" },
+    { "key": "model_width", "label": "Width (mm)", "type": "float", "description": "The model's width in millimetres; a file without a unit is taken as millimetres", "filter_group": "Model size (mm)" },
+    { "key": "model_depth", "label": "Depth (mm)", "type": "float", "description": "The model's depth in millimetres; a file without a unit is taken as millimetres", "filter_group": "Model size (mm)" },
+    { "key": "model_height", "label": "Height (mm)", "type": "float", "description": "The model's height in millimetres, along the axis the file stands on; a file without a unit is taken as millimetres", "filter_group": "Model size (mm)" },
+    { "key": "model_unit", "label": "Model unit", "type": "single_select", "options": ["µm", "mm", "cm", "m", "in", "ft"], "description": "The unit the file declares; 3MF and glTF files declare one" },
+    { "key": "model_textured", "label": "Textured", "type": "boolean", "description": "Its materials use pictures" },
+    { "key": "model_vertices", "label": "Vertices", "type": "integer", "indexed": false },
+    { "key": "model_objects", "label": "Objects", "type": "integer", "description": "The separate objects or meshes the file holds", "indexed": false }
+  ],
+  "extractors": [
+    { "id": "models", "version": 3,
+      "exts": ["stl", "3mf", "obj", "glb", "gltf", "ply"],
+      "page": "extract.html",
+      "fields": ["model_triangles", "model_width", "model_depth", "model_height", "model_unit", "model_textured", "model_vertices", "model_objects"] }
+  ],
+  "formats": [
+    { "exts": ["stl", "3mf", "ply", "glb"], "kind": "model", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 },
+      "screen": { "id": "models", "title": "3D models", "icon": "cube", "toolbar": ["v.back", "v.count", "v.group", "breadcrumb", "spacer", "fit", "grid", "edges", "textures", "details", "look", "v.strip", "nav"], "inspector": ["curio.models.info"] } },
+    { "exts": ["obj"], "kind": "model", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 },
+      "companions": [{ "role": "materials", "files": ["{stem}.mtl"] }] },
+    { "exts": ["gltf"], "kind": "model", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 },
+      "companions": [{ "role": "buffers", "files": ["{stem}.bin"] }] }
+  ],
+  "viewer_tools": [
+    { "id": "fit", "title": "Fit", "icon": "focus-centered", "kind": "button" },
+    { "id": "grid", "title": "Floor grid", "icon": "grid-4x4", "kind": "button" },
+    { "id": "edges", "title": "Edges", "icon": "polygon", "kind": "button" },
+    { "id": "textures", "title": "Textures", "icon": "texture", "kind": "button" },
+    { "id": "details", "title": "Details", "icon": "info-circle", "kind": "button" },
+    { "id": "look", "title": "Appearance", "icon": "adjustments-horizontal", "kind": "button" }
+  ],
+  "viewer_keys": [
+    { "id": "fit", "title": "Fit", "key": "F" },
+    { "id": "grid", "title": "Floor grid", "key": "G" },
+    { "id": "edges", "title": "Edges", "key": "E" },
+    { "id": "textures", "title": "Textures", "key": "T" },
+    { "id": "details", "title": "Details", "key": "I" },
+    { "id": "shading", "title": "Next shading", "key": "S" }
+  ],
+  "widgets": [
+    { "id": "curio.models.info", "title": "3D model", "icon": "cube", "fields": ["model_triangles", "model_width", "model_depth", "model_height", "model_unit", "model_textured", "model_vertices", "model_objects"], "kinds": ["model"] }
+  ],
+  "sorts": [
+    { "label": "Triangles", "field": "model_triangles" }
+  ],
+  "filters": [
+    { "id": "curio.models.textured", "label": "Textured models", "query": "model_textured = true" }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "id": "curio.ai-generated",
+  "name": "AI generation",
+  "version": "1.0.0",
+  "author": "Curio",
+  "icon": "sparkles",
+  "description": "Shows prompts and settings for AI-generated pictures, plus metadata and previews for models.",
+  "permissions": ["files.read"],
+  "fields": [
+    { "key": "prompt", "label": "Prompt", "type": "text", "widget": "block", "description": "Positive prompt" },
+    { "key": "negative_prompt", "label": "Negative prompt", "type": "text", "widget": "block", "description": "Negative prompt" },
+    { "key": "model", "label": "Model", "type": "text", "description": "Checkpoint name", "own_filter": true },
+    { "key": "model_hash", "label": "Model hash", "type": "text" },
+    { "key": "vae", "label": "VAE", "type": "text" },
+    { "key": "lora", "label": "LoRA", "type": "multi_select", "widget": "chips", "description": "LoRA names", "own_filter": true },
+    { "key": "lora_strength", "label": "LoRA strength", "type": "float", "description": "One value per LoRA, same order", "pair": "lora" },
+    { "key": "sampler", "label": "Sampler", "type": "text" },
+    { "key": "scheduler", "label": "Scheduler", "type": "text" },
+    { "key": "steps", "label": "Steps", "type": "integer" },
+    { "key": "cfg", "label": "CFG scale", "type": "float" },
+    { "key": "seed", "label": "Seed", "type": "text", "indexed": false },
+    { "key": "denoise", "label": "Denoise", "type": "float" },
+    { "key": "clip_skip", "label": "Clip skip", "type": "integer" },
+    { "key": "software", "label": "Generation software", "type": "text" },
+    { "key": "model_type", "label": "Model type", "type": "text", "description": "Checkpoint, LoRA and the like" },
+    { "key": "base_model", "label": "Base model", "type": "text", "description": "Architecture, such as SDXL" },
+    { "key": "model_version", "label": "Version", "type": "text", "description": "Civitai version name" },
+    { "key": "creator", "label": "Creator", "type": "text", "description": "Who published the model" },
+    { "key": "trigger_words", "label": "Trigger words", "type": "multi_select", "widget": "chips", "description": "Words that activate a LoRA" }
+  ],
+  "extractors": [
+    { "id": "pictures", "version": 2,
+      "exts": ["png", "jpg", "jpeg", "jfif", "tif", "tiff", "webp", "heic", "heif", "avif", "dng", "nef", "cr2", "arw"],
+      "page": "extract.html",
+      "fields": ["prompt", "negative_prompt", "model", "model_hash", "vae", "lora", "lora_strength", "sampler", "scheduler", "steps", "cfg", "seed", "denoise", "clip_skip", "software"] },
+    { "id": "models", "version": 2,
+      "exts": ["safetensors", "sft", "ckpt", "gguf"],
+      "page": "extract.html",
+      "fields": ["model_type", "base_model", "model_version", "creator", "trigger_words"] }
+  ],
+  "formats": [
+    { "exts": ["safetensors", "sft", "ckpt", "gguf"], "kind": "other", "type": "Models",
+      "open": { "show_with": ["lora", "model"] },
+      "companions": [
+        { "role": "preview", "cover": true, "files": ["{stem}.webp", "{stem}.preview.webp", "{stem}.preview.png", "{stem}.preview.jpeg", "{stem}.preview.jpg", "{stem}.preview.mp4", "{stem}.preview.gif", "{stem}.preview.webm", "{stem}.png", "{stem}.jpeg", "{stem}.jpg", "{stem}.mp4", "{stem}.gif", "{stem}.webm", "{stem}.avif", "{stem}.jxl"] },
+        { "role": "metadata", "files": ["{stem}.metadata.json", "{stem}.civitai.info", "{stem}.json", "{stem}.txt", "{stem}.description.txt"] }
+      ] }
+  ],
+  "widgets": [
+    { "id": "ai.generation", "title": "AI generation", "icon": "sparkles", "fields": ["prompt", "negative_prompt", "model", "lora", "lora_strength", "sampler", "scheduler", "steps", "cfg", "seed", "denoise", "vae", "software"], "kinds": ["image", "video"] },
+    { "id": "ai.model", "title": "AI model", "icon": "box-model-2", "fields": ["model_type", "base_model", "model_version", "creator", "trigger_words"], "exts": ["safetensors", "sft", "ckpt", "gguf"] }
+  ],
+  "filters": [
+    { "id": "ai.any", "label": "AI-generated", "query": "software IS NOT EMPTY" },
+    { "id": "ai.models", "label": "AI models", "query": "ext IN (safetensors, sft, ckpt, gguf)" },
+    { "id": "ai.fast", "label": "≤ 12 steps", "query": "steps <= 12" }
+  ],
+  "sorts": [
+    { "label": "Steps", "field": "steps" },
+    { "label": "CFG", "field": "cfg" }
+  ]
+}
