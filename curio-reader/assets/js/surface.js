@@ -222,6 +222,12 @@ export class Surface {
   showSpread(s, { atEnd = false, keepScroll = false } = {}) {
     s = Math.max(0, Math.min(s, this.groups.length - 1))
     const changed = s !== this.current
+    // another spread starts at the fit, as Curio's viewer does with the next picture, unless its Settings › Preview keep the zoom (an older Curio doesn't say)
+    const reset = changed && this.zoom !== 1 && !document.documentElement.hasAttribute('data-curio-remember-zoom')
+    if (reset) {
+      this.zoom = 1
+      this.measure()
+    }
     this.current = s
     const w = this.col.widths[s] || 0
     const h = this.col.heights[s] || 0
@@ -250,6 +256,7 @@ export class Surface {
     }
     this.schedule()
     this.told()
+    if (reset) this.onZoom?.()
   }
 
   told() {
