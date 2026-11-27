@@ -140,11 +140,11 @@ export class PagesReading {
     this.tools()
   }
 
-  /** From the grid, reading from a page. */
-  read(page) {
+  /** From the grid, reading from a page; `chosen` by the Page grid button, which the next file of its kind follows. */
+  read(page, chosen = false) {
     this.own.grid = false
-    // opening a page isn't choosing to read the next file of its kind as pages: the Page grid button is
-    this.ownWas.grid = false
+    // opening a page isn't choosing to read the next file of its kind as pages: the Page grid button is, turned on or off
+    if (!chosen) this.ownWas.grid = false
     this.grid.hide()
     this.surface.view.hidden = false
     this.shell.layoutSide()
@@ -413,7 +413,7 @@ export class PagesReading {
     const v = this.view_()
     if (id === 'grid') {
       if (!this.hasGrid) return
-      if (v.grid) return this.read(this.place.page)
+      if (v.grid) return this.read(this.place.page, true)
       this.own.grid = true
       this.showGrid(this.place.page)
       return this.saveSoon(true)
