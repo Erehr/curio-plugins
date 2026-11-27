@@ -510,16 +510,18 @@ export class Surface {
   }
 
   wheel(e) {
-    if (e.ctrlKey) {
+    // zoomed in, the wheel does what it does over a picture in Curio's viewer (Settings › Controls; an older Curio doesn't say, and nothing changes)
+    const curio = this.zoom > 1 ? document.documentElement.dataset.curioWheel : null
+    if (e.ctrlKey || (curio === 'zoom' && !e.shiftKey)) {
       e.preventDefault()
       const r = this.view.getBoundingClientRect()
       this.setZoom(this.zoom * 2 ** (-e.deltaY / WHEEL_DOUBLING), e.clientX - r.left, e.clientY - r.top)
       return
     }
-    if (this.opts.continuous || !this.opts.wheelTurns || e.shiftKey) return
+    if (curio === 'scroll' || this.opts.continuous || !this.opts.wheelTurns || e.shiftKey) return
     const dir = Math.sign(e.deltaY)
-    // a tall page scrolls first; at its edge the wheel turns the page
-    if (!dir || !this.atScrollEdge(dir)) return this.wheelTurns.reset()
+    // a tall page scrolls first and turns at its edge; a page zoomed in turns at once, as Curio's viewer steps to the next picture
+    if (!dir || (curio !== 'navigate' && !this.atScrollEdge(dir))) return this.wheelTurns.reset()
     e.preventDefault()
     this.wheelTurns.feed(e, (d) => this.turn(d, { atEnd: d < 0 }), this.H)
   }
