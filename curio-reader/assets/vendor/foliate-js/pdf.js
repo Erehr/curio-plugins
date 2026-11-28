@@ -1297,7 +1297,8 @@ export const makePDF = async file => {
         canvas.width = Math.ceil(viewport.width)
         canvas.height = Math.ceil(viewport.height)
         try {
-            await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise
+            // Curio: drawn as for print, which runs without animation frames; on screen, pdf.js waits for one between steps, and a hidden page making covers never gets one
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport, intent: 'print' }).promise
         } catch (e) {
             canvas.width = 0
             canvas.height = 0
