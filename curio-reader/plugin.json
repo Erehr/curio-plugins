@@ -33,7 +33,7 @@
       "fields": ["pages", "words", "title", "author", "series", "series_index", "published", "publisher", "language", "isbn", "identifiers", "genre"] }
   ],
   "formats": [
-    { "exts": ["cbz", "cb7"], "kind": "archive", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 }, "screen": { "id": "reader", "title": "Reader", "icon": "book", "toolbar": ["v.back", "v.count", "v.group", "breadcrumb", "spacer", "place", "side", "bookmark", "search", "grid", "gridStyle", "layout", "look", "nav"], "inspector": ["curio.reader.genres", "curio.reader.book", "curio.reader.series"] } },
+    { "exts": ["cbz", "cb7"], "kind": "archive", "viewer": "index.html", "screen": { "id": "reader", "title": "Reader", "icon": "book", "toolbar": ["v.back", "v.count", "v.group", "breadcrumb", "spacer", "place", "side", "bookmark", "search", "grid", "gridStyle", "layout", "look", "nav"], "inspector": ["curio.reader.genres", "curio.reader.book", "curio.reader.series"] } },
     { "exts": ["pdf"], "kind": "document", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 } },
     { "exts": ["epub", "fb2", "fbz", "mobi", "azw3", "azw", "prc"], "kind": "document", "type": "Books", "viewer": "index.html", "thumbnail_page": { "page": "thumb.html", "size": 512 } }
   ],
