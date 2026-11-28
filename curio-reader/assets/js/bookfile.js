@@ -11,7 +11,7 @@ const OBFUSCATION = ['http://www.idpf.org/2008/embedding', 'http://ns.adobe.com/
 /** Whether a book is locked: an EPUB whose encryption.xml names more than font obfuscation, or rights.xml from Adobe's DRM; a MOBI with its encryption field set. */
 async function locked(curio, item, file, ext) {
   if (ext === 'epub') {
-    const list = await curio.archive.list({ id: item.id }).catch(() => null)
+    const list = await curio.archive.list({ id: item.id, sizes: false }).catch(() => null)
     const names = new Set((list?.entries || []).map((e) => e.name))
     if (names.has('META-INF/rights.xml')) return true
     if (!names.has('META-INF/encryption.xml')) return false

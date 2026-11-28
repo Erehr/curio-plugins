@@ -9,7 +9,8 @@ const COVER_LIMIT_MS = 20000
 const inTime = (work) => Promise.race([work, new Promise((_, no) => setTimeout(() => no(new Error('took too long')), COVER_LIMIT_MS))])
 
 async function comicCover(item, size) {
-  const { entries } = await curio.archive.list({ id: item })
+  // the names are enough: each picture's size would be a read of its own, hundreds of them in a comic
+  const { entries } = await curio.archive.list({ id: item, sizes: false })
   const first = (entries || []).find((e) => e.picture)
   if (!first) return null
   const { url } = await curio.archive.entryUrl({ id: item, name: first.name, size })

@@ -257,7 +257,8 @@ function parseComicBookInfo(comment, put) {
 }
 
 async function readComic(data) {
-  const { entries } = await curio.archive.list({ id: data.item })
+  // counting pages needs only the names, not each picture's size (a read of its own for every page)
+  const { entries } = await curio.archive.list({ id: data.item, sizes: false })
   const put = builder()
   put.num('pages', (entries || []).filter((e) => e.picture).length)
   const info = (entries || []).find((e) => e.name.split('/').pop().toLowerCase() === 'comicinfo.xml' && e.size < 4 * 1024 * 1024)
