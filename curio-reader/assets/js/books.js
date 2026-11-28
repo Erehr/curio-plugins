@@ -31,11 +31,11 @@ const STEPS = ['small', 'medium', 'large']
 const stepChoice = (id, label, steps, v) => ({ type: 'choice', id, label, value: String(nearest(steps, Number(v) || 0)), options: steps.map((n, i) => ({ value: String(n), label: t(`reader.steps.${STEPS[i]}`) })) })
 export const THEME_COLOURS = { light: ['#fbfbf8', '#1d1d1b', '#2a64b8'], sepia: ['#f4ecd8', '#5b4636', '#8a5a1c'], dark: ['#1f1f1f', '#d8d8d4', '#7fb2f0'], black: ['#000000', '#c4c4c0', '#7fb2f0'] }
 
-/** The Theme swatches, for books and for pages that take the theme's colours. */
-export function themeSwatches(s) {
+/** The Theme swatches, for books and for pages that take the theme's colours; `key` is the setting they set, a PDF's apart from books'. */
+export function themeSwatches(s, key = 'bookTheme') {
   const css = getComputedStyle(document.documentElement)
   const colour = (theme) => (theme === 'curio' ? css.getPropertyValue('--bg').trim() : THEME_COLOURS[theme]?.[0])
-  return { type: 'swatches', id: 'bookTheme', label: t('reader.tools.theme'), value: s.bookTheme, options: THEMES.map((theme) => ({ value: theme, label: themeName(theme), icon: theme === 'book' ? 'book' : null, background: colour(theme) || null })) }
+  return { type: 'swatches', id: key, label: t('reader.tools.theme'), value: s[key], options: THEMES.map((theme) => ({ value: theme, label: themeName(theme), icon: theme === 'book' ? 'book' : null, background: colour(theme) || null })) }
 }
 const MENU_MARKS = 40
 const MENU_PLACES = 300

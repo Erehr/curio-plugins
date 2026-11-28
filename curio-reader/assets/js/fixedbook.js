@@ -34,9 +34,14 @@ export class FixedBook extends PagesReading {
     return 'pdf'
   }
 
-  // a book starts a page at a time, left to right unless it says otherwise, scrolled where books are
+  /** The setting the theme is kept in: a PDF's own, as documents want their printed colours where books want Curio's; a book laid out in pages shares books'. */
+  get themeKey() {
+    return this.book?.pdf ? 'pdfTheme' : 'bookTheme'
+  }
+
+  // a PDF starts a page at a time, left to right unless it says otherwise; what is chosen in one is kept for PDFs alone (reader.js `remember`), apart from comics' and books'
   defaults(s) {
-    return { ...s, double: false, cover: true, rtl: false, fit: 'page', continuous: s.bookFlow === 'scrolled', pageWidth: 100 }
+    return { ...s, double: false, cover: true, rtl: false, fit: 'page', continuous: false, pageWidth: 100 }
   }
 
   /** Opens a book at its kept page; `opened` is its file as bookfile.js opened it. */
@@ -76,15 +81,15 @@ export class FixedBook extends PagesReading {
 
   // the style's colours for the pages: pdf.js draws them in these, pictures kept; `light` and the book's own leave pages as printed
   colours() {
-    const s = this.shell.settings()
-    if (s.bookTheme === 'book' || s.bookTheme === 'light') return null
+    const theme = this.shell.settings()[this.themeKey]
+    if (theme === 'book' || theme === 'light') return null
     const css = getComputedStyle(document.documentElement)
-    const [bg, text] = THEME_COLOURS[s.bookTheme] || ['', css.getPropertyValue('--text').trim()]
+    const [bg, text] = THEME_COLOURS[theme] || ['', css.getPropertyValue('--text').trim()]
     return { background: bg || css.getPropertyValue('--bg').trim(), foreground: text }
   }
 
   theme() {
-    this.surface.view.dataset.theme = this.shell.settings().bookTheme
+    this.surface.view.dataset.theme = this.shell.settings()[this.themeKey]
   }
 
   /** The colours changed (a setting, or Curio's theme): the pages are drawn again in them. */
@@ -139,18 +144,18 @@ export class FixedBook extends PagesReading {
 
   lookTop() {
     if (!this.source.recolours) return []
-    return [themeSwatches(this.shell.settings())]
+    return [themeSwatches(this.shell.settings(), this.themeKey)]
   }
 
   ownValue(id, value) {
-    if (id !== 'bookTheme') return false
-    this.shell.changeSettings({ bookTheme: value })
+    if (id !== this.themeKey) return false
+    this.shell.changeSettings({ [id]: value })
     return true
   }
 
   ownChoice(id) {
     if (id === 'search') this.shell.find()
-    else if (id === 'theme' && this.source.recolours) this.shell.changeSettings({ bookTheme: THEMES[(THEMES.indexOf(this.shell.settings().bookTheme) + 1) % THEMES.length] })
+    else if (id === 'theme' && this.source.recolours) this.shell.changeSettings({ [this.themeKey]: THEMES[(THEMES.indexOf(this.shell.settings()[this.themeKey]) + 1) % THEMES.length] })
     else return false
     return true
   }

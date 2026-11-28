@@ -2,6 +2,8 @@
 export const DEFAULTS = {
   double: false, cover: true, continuous: false, rtl: false, fit: 'page', gap: 12, wheelTurns: true, pageWidth: 100, budgetMB: 512, enlarge: true,
   zipGrid: true, gridStyle: 'grid', gridSize: 200, readState: true, side: false, sideWidth: 260,
+  // a PDF, mostly a document printed as it is, starts in its own colours; a book in Curio's
+  pdfTheme: 'book',
   bookFlow: 'paginated', bookColumns: 'auto', bookTheme: 'curio', bookFont: '', bookSize: 100, bookLineHeight: 1.5, bookAlign: 'justify', bookIndent: 'book', bookParagraph: 'book', bookHyphenate: true, bookMargin: 48, bookPageWidth: 80, bookGap: 6,
 }
 
